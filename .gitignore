@@ -158,8 +158,7 @@ cython_debug/
 # Database
 *.sqlite3
 
-# Settings.py
-*.settings.py
+
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
