@@ -1,0 +1,58 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'recipes/css/style.css' %}">
+        <title>Recipe Overview</title>
+    </head>
+    <body>
+        <header>
+            <h1>
+                <p>Recipe List</p>
+            </h1>
+        </header>
+        <main>
+        <div class="main-box">
+            <p>Search for an ingredient or recipe name:</p>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form.recipe_name }}
+                {{ form.chart_type }}
+                <button type="submit">Search</button>
+                <a href="{% url 'recipes:recipes_list' %}"><button type=button>Show All Recipes</button></a>    
+            </form>
+            {% if form.is_bound %}
+            <p>You Searched for: {{form.recipe_name.value}}</p>
+            {% if not recipes.empty %}
+            <ul>
+                {% for index, recipe in recipes.iterrows %}
+                <li>
+                    <h2><a href="{% url 'recipes:detail' pk=recipe.id %}">{{ recipe.name }}</a></h2>
+                    <img src="/media/{{ recipe.pic }}" />
+                </li>
+                {% endfor %}
+            </ul>
+            <h1>Data Analytics</h1>
+            <img class="chart-img" src="data:image/png;base64, {{chart|safe}}">
+            {% else %}
+                <h3>No data</h3>
+                {% endif %}
+        {% else %}
+            <ul>
+                {% for recipe in recipes %}
+                <li>
+                    <h2><a href="{% url 'recipes:detail' pk=recipe.id %}">{{ recipe.name }}</a></h2>
+                    <img src="{{recipe.pic.url}}" height="auto" width="200px"/>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        </main>
+        <a class="logout-button" href ="{%url 'logout_success' %}">  Logout  </a>
+        <a class="home-link" href="{% url 'recipes:recipes_home' %}">Back to Home</a>
+    </body>
+</html>
